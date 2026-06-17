@@ -1,73 +1,134 @@
-# Requirements Datasets
+# Dataset Documentation
 
-This repository contains three CSV datasets focusing on requirement specifications and problem analysis for training and testing models. Each dataset serves a distinct purpose, providing structured data on requirement descriptions, problem domains, and related attributes.
+This folder contains the datasets used by the requirements-to-UML class diagram extraction experiments.
 
-## Datasets
+## Files
 
-### 1. `Requirements.csv`
-This file contains 106 requirement questions, along with their associated classes, attributes, and relationships. This dataset is used for training models in the domain of requirement classifications and attribute extraction.
+```text
+Requirements.csv
+Requirements_ProblemAnalysis.csv
+r12_problems.csv.csv
+real_world_studies.csv
+real_world_studies_template.csv
+```
 
-#### Columns:
-- **Problem**: A textual description of the problem or scenario.
-- **Class**: The main classes or entities involved.
-- **Attributes**: The attributes associated with each class.
-- **Relationship**: Relationships between the different classes.
+## 1. `Requirements.csv`
 
-#### Sample:
-| Problem | Class | Attributes | Relationship |
-|---------|-------|------------|--------------|
-| Consider a movie database... | Movie, Studio, Genre... | Movie [Movie ID, Title...] | Movie and Studio... |
+Main dataset used for training and internal 80:20 token-level evaluation.
 
----
+### Columns
 
-### 2. `Requirements_ProblemAnalysis.csv`
-This file expands on `Requirements.csv` by adding textual analysis metadata for all 106 requirements, including information such as word counts, sentence counts, and domain classifications. 
+| Column | Description |
+|---|---|
+| `Problem` | Natural language software requirement description. |
+| `Class` | Comma-separated class/entity names. |
+| `Atributes` | Class-attribute annotations in the format `Class [attr1, attr2]`. The column name follows the original dataset spelling. |
+| `Relationship` | Class-class relationships in the format `ClassA and ClassB`. |
 
-#### Columns:
-- **No**: Unique identifier for each requirement.
-- **Requirements Text**: Full requirement text.
-- **Class**: The classes/entities involved.
-- **Attributes**: Attributes linked to each class.
-- **Relationship**: Defined relationships between classes.
-- **Source**: The origin of the requirement (e.g., Academic sources).
-- **Domain**: The domain of the problem (e.g., Health, Business).
-- **No. of Sentences**: Number of sentences in the requirement.
-- **No. of Words**: Total number of words.
-- **No. of Unique Words**: Count of unique words in the text.
-- **No. of Words After Stop Words Elimination**: Word count after stop words are removed.
-- **No. of Classes**: Number of classes involved.
-- **No. of Attributes**: Number of attributes mentioned.
-- **No. of Relationships**: Number of relationships between classes.
+### Usage
 
-#### Sample:
-| No | Requirements Text | Class | Attributes | Relationship | Source | Domain | No. of Sentences |
-|----|-------------------|-------|------------|--------------|--------|--------|------------------|
-| R1 | Consider a movie... | Movie, Studio... | Movie [Movie ID, ...] | Movie and Studio... | Academic | Entertainment | 14 |
+Used by:
 
----
+- `01_experiment_logistic_regression.ipynb`
+- `02_experiment_random_forest.ipynb`
+- `03_experiment_xgboost.ipynb`
 
-### 3. `r12_problems.csv`
-This file contains a subset of 12 requirement problems sourced from Domobot, detailing their class and attribute definitions. It is designed for testing and evaluating models on a smaller dataset of problems.
+The notebooks convert this dataset into token-level labels:
 
-#### Columns:
-- **Problem**: Description of the requirement problem.
-- **Class**: The classes or entities involved.
-- **Attributes**: The attributes associated with each class.
-- **Relationship**: Relationships between the different classes.
+- `Tag`
+- `Class_Related`
+- `Class_R`
 
-#### Sample:
-| Problem | Class | Attributes | Relationship |
-|---------|-------|------------|--------------|
-| A company is comprised... | Company, Department... | Department [ID, ...] | Company and Department... |
+## 2. `Requirements_ProblemAnalysis.csv`
 
----
+Metadata and statistical overview for the main requirement problems.
 
-## Usage
+### Columns
 
-These datasets can be used for:
-- **Training machine learning models** for text classification, attribute extraction, and relationship identification.
-- **Benchmarking algorithms** designed for requirement parsing and domain-specific problem analysis.
-- **Textual analysis** of problem structures across various domains.
+| Column | Description |
+|---|---|
+| `No` | Requirement identifier. |
+| `Requirements Text` | Full requirement text. |
+| `Class` | Annotated classes/entities. |
+| `Atributes` | Annotated attributes. |
+| `Relationship` | Annotated relationships. |
+| `Source` | Requirement source. |
+| `Domain` | Application domain. |
+| `No. of Sentences` | Number of sentences. |
+| `No. of Words` | Number of words. |
+| `No. of Unique Words` | Number of unique words. |
+| `No. of Words After Stop Words Elimination` | Word count after stop-word removal. |
+| `No. of Classes` | Number of annotated classes. |
+| `No. of Attributes` | Number of annotated attributes. |
+| `No. of Relationships` | Number of annotated relationships. |
 
+### Usage
 
+Used for dataset description and Table 1-style statistics in the paper/report.
+
+## 3. `r12_problems.csv.csv`
+
+Subset of 12 requirement problems used for comparative evaluation against the reference SVM paper and DoMoBOT.
+
+### Columns
+
+| Column | Description |
+|---|---|
+| `Problem` | Natural language requirement problem. |
+| `Class` | Annotated classes/entities. |
+| `Atributes` | Annotated attributes. |
+| `Relationship` | Annotated class-class relationships. |
+
+### Usage
+
+Used by notebooks 01-03 to generate Table 4-style evaluation results.
+
+## 4. `real_world_studies.csv`
+
+Reconstructed real-world case-study dataset used by:
+
+```text
+04_experiment_real_world_studies.ipynb
+```
+
+It contains two case studies:
+
+| System | Requirements name | Domain |
+|---|---|---|
+| System 1 | Stroke recovery assistant | Health |
+| System 2 | Archive space project | Information system |
+
+### Columns
+
+| Column | Description |
+|---|---|
+| `System` | System identifier, e.g. `System 1`. |
+| `Requirements name` | Case-study name. |
+| `Domain` | Case-study domain. |
+| `Problem` | Reconstructed natural language requirement text. |
+| `Class` | Manual reference class annotation. |
+| `Atributes` | Manual reference class-attribute annotation. |
+| `Relationship` | Manual reference class-class relationship annotation. |
+
+### Important Validity Note
+
+The full original texts and expert annotations for the real-world studies were not explicitly available in the public reference repository or in the reference paper text. Therefore, this file contains reconstructed case studies based on the reported system names, domains, class counts, attribute counts, relationship counts, and conceptual hints from the reference paper.
+
+Use this dataset as an additional reconstructed case-study evaluation, not as an exact reproduction of the reference paper's real-world study.
+
+## 5. `real_world_studies_template.csv`
+
+Blank template for creating or replacing real-world case-study inputs.
+
+Use this file if you want to add manually verified case studies. Copy it to:
+
+```text
+real_world_studies.csv
+```
+
+Then fill in all required columns before running notebook 04.
+
+## Citation and Attribution
+
+The main dataset and the 12-problem benchmark are credited to the original AutomatedRE work by Umar et al. and its public repository. Please cite the reference paper when using these datasets or baseline values.
 
