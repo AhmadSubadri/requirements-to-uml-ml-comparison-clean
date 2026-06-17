@@ -1,14 +1,16 @@
-# AutomatedRE Model Comparison Experiment
+# Requirements-to-UML Model Comparison
 
-Repositori ini berisi replikasi dan perluasan eksperimen ekstraksi diagram kelas UML dari teks kebutuhan. Pipeline rujukan menggunakan tiga sub-model SVM; eksperimen ini mengganti classifier dengan:
+This repository contains a reproducible machine learning experiment for extracting UML class diagram components from natural language software requirements.
+
+The reference pipeline uses three sequential SVM sub-models. This work reproduces the same pipeline and compares three alternative classifiers:
 
 - Logistic Regression
 - Random Forest
 - XGBoost
 
-Semua model memakai preprocessing, fitur, target, dan protokol evaluasi yang sama agar perbandingan adil.
+All models use the same preprocessing, feature transformation, prediction targets, train/test protocol, and evaluation metrics so that the comparison remains controlled.
 
-## Struktur Utama
+## Project Structure
 
 ```text
 Dataset/
@@ -25,37 +27,44 @@ Dataset/
 
 create_experiment_notebooks.py
 create_real_world_notebook.py
+
+docs/assets/
+  figure5a_lr_expert_vs_model.png
+  figure5b_rf_expert_vs_model.png
+  figure5c_xgb_expert_vs_model.png
 ```
 
-Folder `experiment_outputs/`, `paper/`, `model/`, dan file model `.joblib` tidak dimasukkan ke GitHub karena berisi artefak hasil eksperimen, draft paper, atau file berukuran besar.
+Generated outputs, trained models, paper drafts, and large binary artifacts are intentionally excluded from GitHub through `.gitignore`.
 
-## Dependensi
+## Requirements
 
-Gunakan Python 3.10+ atau 3.11. Install dependensi berikut:
+Use Python 3.10+ or 3.11.
+
+Install the required packages:
 
 ```bash
 pip install pandas numpy scikit-learn nltk joblib matplotlib xgboost python-docx
 ```
 
-Jika memakai Jupyter/VSCode Notebook:
+For Jupyter or VSCode Notebook execution:
 
 ```bash
 pip install notebook ipykernel
 ```
 
-## Alur Eksperimen
+## Experiment Workflow
 
-Jalankan notebook secara berurutan. Disarankan menjalankan satu notebook sampai selesai, lalu shutdown kernel sebelum lanjut ke notebook berikutnya.
+Run the notebooks sequentially. It is recommended to run one notebook until completion, then shut down its kernel before starting the next notebook.
 
 ### 1. Logistic Regression
 
-Jalankan:
+Run:
 
 ```text
 01_experiment_logistic_regression.ipynb
 ```
 
-Output utama:
+Main outputs:
 
 ```text
 experiment_outputs/logistic_regression/
@@ -72,13 +81,13 @@ experiment_outputs/logistic_regression/
 
 ### 2. Random Forest
 
-Shutdown kernel notebook pertama, lalu jalankan:
+Shut down the Logistic Regression notebook kernel, then run:
 
 ```text
 02_experiment_random_forest.ipynb
 ```
 
-Output utama:
+Main outputs:
 
 ```text
 experiment_outputs/random_forest/
@@ -90,19 +99,19 @@ experiment_outputs/random_forest/
   table4_r12_vs_svm_domobot.csv
 ```
 
-Catatan: file model Random Forest bisa sangat besar, terutama sub-model `class_attribute_relationship`.
+Note: Random Forest model files can become very large, especially the `class_attribute_relationship` model.
 
 ### 3. XGBoost
 
-Shutdown kernel notebook kedua, lalu jalankan:
+Shut down the Random Forest notebook kernel, then run:
 
 ```text
 03_experiment_xgboost.ipynb
 ```
 
-Notebook ini memakai wrapper `XGBLabelEncodedClassifier` agar label target dikodekan ulang di setiap fold cross-validation. Ini diperlukan karena XGBoost membutuhkan indeks kelas numerik yang berurutan pada setiap proses `fit`.
+This notebook uses an `XGBLabelEncodedClassifier` wrapper so that target labels are encoded inside each cross-validation fold. This is required because XGBoost expects contiguous numeric class indices during each `fit`.
 
-Output utama:
+Main outputs:
 
 ```text
 experiment_outputs/xgboost/
@@ -114,28 +123,28 @@ experiment_outputs/xgboost/
   table4_r12_vs_svm_domobot.csv
 ```
 
-### 4. Real-World Studies
+### 4. Reconstructed Real-World Studies
 
-Setelah tiga model utama selesai, jalankan:
+After the three main classifiers have been trained, run:
 
 ```text
 04_experiment_real_world_studies.ipynb
 ```
 
-Notebook ini membaca:
+This notebook reads:
 
 ```text
 Dataset/real_world_studies.csv
 ```
 
-File tersebut berisi dua reconstructed real-world case studies:
+The file contains two reconstructed real-world case studies:
 
 - System 1: Stroke recovery assistant
 - System 2: Archive space project
 
-Catatan penting: teks asli dua studi kasus dari paper rujukan tidak tersedia eksplisit di dataset publik. Karena itu file ini adalah rekonstruksi berbasis karakteristik yang dilaporkan paper rujukan, bukan salinan input asli.
+Important note: the original full texts of these two real-world studies were not explicitly available in the public reference artifacts. Therefore, `real_world_studies.csv` contains reconstructed case studies based on the reported system names, domains, class counts, attribute counts, relationship counts, and conceptual hints from the reference paper. These cases should not be claimed as exact reproductions of the original inputs.
 
-Output utama:
+Main outputs:
 
 ```text
 experiment_outputs/real_world_studies/
@@ -148,22 +157,22 @@ experiment_outputs/real_world_studies/
   figure5c_xgb_expert_vs_model.png
 ```
 
-Pada Figure 5, label `Expert` berarti manual reference annotation/proxy expert dari `real_world_studies.csv`, bukan expert asli dari paper rujukan.
+In Figure 5, the `Expert` label refers to the manual reference annotation/proxy expert defined in `real_world_studies.csv`, not the original expert annotation from the reference paper.
 
-## Generate Ulang Notebook
+## Regenerating the Notebooks
 
-Jika notebook perlu dibuat ulang dari template:
+If the notebooks need to be recreated from the Python templates, run:
 
 ```bash
 python create_experiment_notebooks.py
 python create_real_world_notebook.py
 ```
 
-Perintah pertama membuat ulang notebook 01-03. Perintah kedua membuat ulang notebook 04.
+The first command recreates notebooks 01-03. The second command recreates notebook 04.
 
-## Ringkasan Hasil Final
+## Final Results Summary
 
-### Table 3: Dataset Utama 80:20
+### Table 3: Main Dataset 80:20 Split
 
 Weighted F1:
 
@@ -186,7 +195,7 @@ Average F1:
 | Random Forest | 96.19% |
 | XGBoost | 90.04% |
 
-### Real-World Reconstructed Studies
+### Reconstructed Real-World Studies
 
 | Model | System 1 F1 | System 2 F1 |
 |---|---:|---:|
@@ -194,11 +203,26 @@ Average F1:
 | Random Forest | 75.44 | 63.75 |
 | XGBoost | 80.96 | 64.36 |
 
-## Catatan Validitas
+## Example Output
 
-- Eksperimen 01-03 menggunakan dataset publik dari repo rujukan.
-- Evaluasi 12 problem memakai dataset `r12_problems.csv.csv`.
-- Evaluasi real-world memakai reconstructed case studies karena teks asli System 1 dan System 2 tidak tersedia eksplisit.
-- Figure 5 memakai manual reference annotation/proxy expert, bukan expert asli paper rujukan.
-- Jangan klaim real-world study sebagai replikasi persis paper rujukan; klaim yang tepat adalah evaluasi tambahan pada studi kasus rekonstruksi.
+The following figures show example visualizations of extracted UML class diagram components for the reconstructed real-world studies. The `Expert` rows represent the manual reference annotation/proxy expert, while the model rows represent extracted components from the trained classifiers.
 
+### Logistic Regression
+
+![Proxy expert vs Logistic Regression extracted class diagram components](docs/assets/figure5a_lr_expert_vs_model.png)
+
+### Random Forest
+
+![Proxy expert vs Random Forest extracted class diagram components](docs/assets/figure5b_rf_expert_vs_model.png)
+
+### XGBoost
+
+![Proxy expert vs XGBoost extracted class diagram components](docs/assets/figure5c_xgb_expert_vs_model.png)
+
+## Validity Notes
+
+- Experiments 01-03 use the public dataset from the reference repository.
+- The 12-problem evaluation uses `r12_problems.csv.csv`.
+- The real-world study evaluation uses reconstructed case studies because the original full texts of System 1 and System 2 were not explicitly available.
+- Figure 5 uses manual reference annotation/proxy expert labels, not the original expert annotations from the reference paper.
+- The real-world evaluation should be described as an additional reconstructed case-study evaluation, not as an exact reproduction of the reference paper's real-world study.

@@ -37,6 +37,9 @@ paper/
 *.jpeg
 *.svg
 *.puml
+!docs/
+!docs/assets/
+!docs/assets/*.png
 
 # OS/editor noise
 .DS_Store
