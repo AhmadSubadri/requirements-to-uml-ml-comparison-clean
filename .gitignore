@@ -1,0 +1,45 @@
+# Python cache and virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+*.nbconvert.ipynb
+AutomateRE_model_training.ipynb
+Predict_results.ipynb
+
+# Generated experiment outputs
+experiment_outputs/
+
+# Trained models and binary artifacts
+model/
+*.joblib
+*.pkl
+*.pickle
+
+# Paper drafts, references, and local document dumps
+paper/
+*.docx
+*.pdf
+*.pptx
+*.xlsx
+*.tmp
+~$*
+
+# Generated images and diagrams
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.puml
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
