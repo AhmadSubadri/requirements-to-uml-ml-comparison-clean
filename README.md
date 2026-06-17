@@ -226,3 +226,9 @@ The following figures show example visualizations of extracted UML class diagram
 - The real-world study evaluation uses reconstructed case studies because the original full texts of System 1 and System 2 were not explicitly available.
 - Figure 5 uses manual reference annotation/proxy expert labels, not the original expert annotations from the reference paper.
 - The real-world evaluation should be described as an additional reconstructed case-study evaluation, not as an exact reproduction of the reference paper's real-world study.
+
+## License and Attribution
+
+This repository is released under the MIT License for research and educational use.
+
+The original AutomatedRE framework, datasets, and baseline results are credited to Umar et al. and the public AutomatedRE repository. Please cite the reference paper when using the dataset, baseline values, or reproduction setup.
