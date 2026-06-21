@@ -1,5 +1,7 @@
 # Requirements-to-UML Model Comparison
 
+[![DOI](https://zenodo.org/badge/1271742257.svg)](https://doi.org/10.5281/zenodo.20781084)
+
 This repository contains a reproducible machine learning experiment for extracting UML class diagram components from natural language software requirements.
 
 The reference pipeline uses three sequential SVM sub-models. This work reproduces the same pipeline and compares three alternative classifiers:
@@ -176,32 +178,32 @@ The first command recreates notebooks 01-03. The second command recreates notebo
 
 Weighted F1:
 
-| Model | Weighted F1 |
-|---|---:|
-| SVM paper | 0.9200 |
-| Logistic Regression | 0.9469 |
-| Random Forest | 0.8905 |
-| XGBoost | 0.9197 |
+| Model               | Weighted F1 |
+| ------------------- | ----------: |
+| SVM paper           |      0.9200 |
+| Logistic Regression |      0.9469 |
+| Random Forest       |      0.8905 |
+| XGBoost             |      0.9197 |
 
 ### Table 4: 12 Requirement Problems
 
 Average F1:
 
-| Model | Average F1 |
-|---|---:|
-| SVM paper | 85.00% |
-| DoMoBOT | 84.33% |
-| Logistic Regression | 94.92% |
-| Random Forest | 96.19% |
-| XGBoost | 90.04% |
+| Model               | Average F1 |
+| ------------------- | ---------: |
+| SVM paper           |     85.00% |
+| DoMoBOT             |     84.33% |
+| Logistic Regression |     94.92% |
+| Random Forest       |     96.19% |
+| XGBoost             |     90.04% |
 
 ### Reconstructed Real-World Studies
 
-| Model | System 1 F1 | System 2 F1 |
-|---|---:|---:|
-| Logistic Regression | 81.25 | 66.90 |
-| Random Forest | 75.44 | 63.75 |
-| XGBoost | 80.96 | 64.36 |
+| Model               | System 1 F1 | System 2 F1 |
+| ------------------- | ----------: | ----------: |
+| Logistic Regression |       81.25 |       66.90 |
+| Random Forest       |       75.44 |       63.75 |
+| XGBoost             |       80.96 |       64.36 |
 
 ## Example Output
 
